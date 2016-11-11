@@ -1,0 +1,548 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 8.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       157,          7]
+NotebookDataLength[     19071,        540]
+NotebookOptionsPosition[     17763,        491]
+NotebookOutlinePosition[     18143,        508]
+CellTagsIndexPosition[     18100,        505]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Simple Perceptron  Implementation", "Section",
+ CellChangeTimes->{{3.6878226000206614`*^9, 3.687822602236236*^9}, {
+  3.687869180805932*^9, 3.687869222157248*^9}, {3.687869259493576*^9, 
+  3.687869262691226*^9}}],
+
+Cell["\<\
+Assumes one response variable with values -1 or 1.
+\
+\>", "Text",
+ CellChangeTimes->{{3.687869270250534*^9, 3.6878692918663607`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Code for a Simple Perceptron", "Subsubsection",
+ CellChangeTimes->{{3.6878628326931868`*^9, 3.687862840957796*^9}}],
+
+Cell["This perceptron assumes ", "Text",
+ CellChangeTimes->{{3.687866422636847*^9, 3.687866433397771*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Perceptron", "[", 
+   RowBox[{"x_", ",", "y_"}], "]"}], " ", ":=", " ", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "epoch", ",", " ", "correct", ",", "r", ",", "eta", ",", "w", ",", 
+      "xtemp"}], "}"}], ",", 
+    RowBox[{
+     RowBox[{"eta", " ", "=", " ", "0.1"}], ";", " ", 
+     RowBox[{"(*", " ", 
+      RowBox[{"you", " ", "can", " ", "change", " ", "this", " ", "value"}], 
+      "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"w", "=", 
+      RowBox[{"Table", "[", 
+       RowBox[{
+        RowBox[{"RandomReal", "[", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "0.01"}], ",", "0.01"}], "}"}], "]"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"i", ",", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"Dimensions", "[", "x", "]"}], "[", 
+            RowBox[{"[", "2", "]"}], "]"}], "+", "1"}]}], "}"}]}], "]"}]}], 
+     ";", " ", 
+     RowBox[{"(*", 
+      RowBox[{"w0", " ", "to", " ", "wi"}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"xtemp", " ", "=", 
+      RowBox[{"Map", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Prepend", "[", 
+          RowBox[{"#", ",", "1"}], "]"}], "&"}], ",", "x"}], "]"}]}], ";", 
+     " ", 
+     RowBox[{"(*", " ", 
+      RowBox[{
+       RowBox[{"add", " ", "1", " ", "to", " ", "x", " ", "so", " ", "y"}], 
+       "=", " ", 
+       RowBox[{"wx", "+", "w0"}]}], "*)"}], "\[IndentingNewLine]", 
+     RowBox[{"correct", " ", "=", " ", "0"}], ";", " ", 
+     RowBox[{"(*", 
+      RowBox[{"set", " ", "correct", " ", "to", " ", "0"}], "*)"}], 
+     "\[IndentingNewLine]", 
+     RowBox[{"epoch", " ", "=", " ", "0"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"l", " ", "=", " ", 
+      RowBox[{"Length", "[", "x", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"While", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"epoch", " ", "<", " ", "100"}], ")"}], " ", "&&", " ", 
+        RowBox[{"(", 
+         RowBox[{"correct", " ", "<", " ", "l"}], ")"}]}], ",", " ", 
+       RowBox[{"(*", " ", 
+        RowBox[{
+        "You", " ", "can", " ", "change", " ", "the", " ", "epoch", " ", "if",
+          " ", "you", " ", "want", " ", "to"}], "*)"}], "\[IndentingNewLine]", 
+       RowBox[{
+        RowBox[{"correct", " ", "=", " ", "0"}], ";", "\[IndentingNewLine]", 
+        RowBox[{"Table", "[", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"r", "=", 
+            RowBox[{"If", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"w", ".", 
+                RowBox[{"xtemp", "[", 
+                 RowBox[{"[", "k", "]"}], "]"}]}], ">", "0"}], ",", "1", ",", 
+              RowBox[{"-", "1"}]}], "]"}]}], ";", " ", 
+           RowBox[{"(*", 
+            RowBox[{"sign", 
+             RowBox[{"(", 
+              RowBox[{"w", ".", 
+               RowBox[{"x", "[", "k", "]"}]}]}]}], "*)"}], 
+           "\[IndentingNewLine]", 
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{"r", " ", "\[Equal]", " ", 
+              RowBox[{"y", "[", 
+               RowBox[{"[", "k", "]"}], "]"}]}], ",", " ", 
+             RowBox[{"correct", " ", "+=", "1"}], ",", "\[IndentingNewLine]", 
+             RowBox[{"w", "=", 
+              RowBox[{"w", "+", 
+               RowBox[{"eta", "*", 
+                RowBox[{"(", 
+                 RowBox[{
+                  RowBox[{"y", "[", 
+                   RowBox[{"[", "k", "]"}], "]"}], "-", "r"}], ")"}], "*", 
+                RowBox[{"xtemp", "[", 
+                 RowBox[{"[", "k", "]"}], "]"}]}]}]}]}], "]"}]}], ",", "  ", 
+          RowBox[{"(*", " ", 
+           RowBox[{
+            RowBox[{"If", " ", "mapping", " ", "is", " ", "wrong"}], ",", " ", 
+            RowBox[{"adjust", " ", "w"}]}], "*)"}], "\[IndentingNewLine]", 
+          RowBox[{"{", 
+           RowBox[{"k", ",", 
+            RowBox[{"Length", "[", "x", "]"}]}], "}"}]}], "]"}], ";", 
+        RowBox[{"epoch", " ", "+=", "1"}]}]}], "]"}], ";", 
+     RowBox[{"r", "=", 
+      RowBox[{"{", 
+       RowBox[{"w", ",", 
+        RowBox[{"correct", "/", 
+         RowBox[{"Length", "[", "x", "]"}]}]}], "}"}]}], ";", 
+     "\[IndentingNewLine]", "r"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6878633651822367`*^9, 3.6878634558455477`*^9}, 
+   3.687863558939907*^9, {3.687863600860113*^9, 3.687863606115738*^9}, {
+   3.687863847470945*^9, 3.687863866525199*^9}, {3.687864037510763*^9, 
+   3.687864061879999*^9}, {3.6878640938327637`*^9, 3.687864114222142*^9}, {
+   3.6878644186865177`*^9, 3.6878644276671762`*^9}, {3.6878645184032183`*^9, 
+   3.687864524693735*^9}, {3.687864878943719*^9, 3.6878648795109367`*^9}, {
+   3.6878654261181593`*^9, 3.6878654308704157`*^9}, {3.6878663847386093`*^9, 
+   3.687866410166849*^9}, {3.687866482922759*^9, 3.6878666920970697`*^9}, {
+   3.6878674100578213`*^9, 3.6878674158511467`*^9}, {3.687875903829445*^9, 
+   3.687875968263091*^9}}]
+}, Open  ]],
+
+Cell[TextData[StyleBox["Train Perceptron with Sample Data 1to perform AND", \
+"Subsection"]], "Subsubsection",
+ CellChangeTimes->{{3.687869343243359*^9, 3.68786936220735*^9}, {
+  3.687876055273806*^9, 3.68787606453051*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Sample Data 1", "Subsubsection",
+ CellChangeTimes->{{3.687864678985291*^9, 3.6878646828481817`*^9}}],
+
+Cell["Training Simple Perceptron to perform AND.  ", "Text",
+ CellChangeTimes->{{3.6878646920693398`*^9, 3.687864762820386*^9}, {
+  3.68787601948431*^9, 3.687876044979887*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"w", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"RandomReal", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.01"}], ",", "0.01"}], "}"}], "]"}], ",", 
+     RowBox[{"RandomReal", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.01"}], ",", "0.01"}], "}"}], "]"}], ",", 
+     RowBox[{"RandomReal", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "0.01"}], ",", "0.01"}], "}"}], "]"}]}], "}"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"x", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"0", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "0"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"0", ",", "1"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"1", ",", "1"}], "}"}]}], "}"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"y", " ", "=", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", 
+     RowBox[{"-", "1"}], ",", "1"}], "}"}]}], ";"}]}], "Input",
+ CellChangeTimes->{{3.687858391561103*^9, 3.6878584459901943`*^9}, 
+   3.687858863111903*^9, {3.687858923196907*^9, 3.687858932752722*^9}, {
+   3.687860270090184*^9, 3.6878602822158422`*^9}, {3.687860499198106*^9, 
+   3.687860527367342*^9}, {3.687860610530595*^9, 3.687860612314662*^9}, {
+   3.687861481326679*^9, 3.6878614857658577`*^9}, 3.687861516548902*^9, 
+   3.687864781113312*^9, {3.687864830566976*^9, 3.687864836919732*^9}, {
+   3.687869459754589*^9, 3.687869461911499*^9}, 3.687876079792203*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Sample Data 1:  Testing", "Subsubsection",
+ CellChangeTimes->{{3.687864794330587*^9, 3.6878648246978693`*^9}, {
+  3.6878696050046062`*^9, 3.687869625131516*^9}}],
+
+Cell[BoxData[
+ RowBox[{"\[IndentingNewLine]", 
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Get", " ", "the", " ", "weight"}], ",", " ", 
+    RowBox[{
+    "and", " ", "the", " ", "number", " ", "of", " ", "correct", " ", 
+     "Values"}]}], " ", "*)"}], "\n", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"w", ",", "accuracy"}], "}"}], " ", "=", " ", 
+     RowBox[{"Perceptron", "[", 
+      RowBox[{"x", ",", "y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{
+    RowBox[{"toTextW", " ", "=", " ", 
+     RowBox[{"StringRiffle", "[", 
+      RowBox[{"w", ",", "\"\<,\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"(*", " ", 
+    RowBox[{
+    "get", " ", "the", " ", "weights", " ", "and", " ", "number", " ", "of", 
+     " ", "correct", " ", "mappings"}], "*)"}], "\n", 
+   RowBox[{"Insert", "[", 
+    RowBox[{
+     RowBox[{"Grid", "[", 
+      RowBox[{
+       RowBox[{"MapThread", "[", 
+        RowBox[{"List", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<Weigths\>\"", ",", "\"\<Accuracy\>\""}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"toTextW", ",", "accuracy"}], "}"}]}], "}"}]}], "]"}], 
+       ",", 
+       RowBox[{"Alignment", "\[Rule]", " ", "Left"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Background", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"None", ",", 
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"White", ",", 
+             RowBox[{"Lighter", "[", 
+              RowBox[{
+               RowBox[{"Blend", "[", 
+                RowBox[{"{", 
+                 RowBox[{"Blue", ",", "Green"}], "}"}], "]"}], ",", "0.8`"}], 
+              "]"}]}], "}"}], "}"}]}], "}"}]}], ",", 
+       RowBox[{"Dividers", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"Gray", ",", 
+           RowBox[{"{", "LightGray", "}"}], ",", "Gray"}], "}"}], "}"}]}], 
+       ",", 
+       RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+       RowBox[{"Spacings", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", 
+          RowBox[{"{", 
+           RowBox[{"2", ",", 
+            RowBox[{"{", "0.7`", "}"}], ",", "2"}], "}"}]}], "}"}]}]}], "}"}],
+      ",", "2"}], "]"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.687869442710092*^9, 3.687869446188363*^9}, {
+  3.6878695114987917`*^9, 3.687869512341751*^9}, {3.687869591614581*^9, 
+  3.687869594323223*^9}, {3.687869643401455*^9, 3.6878696455358257`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  TagBox[GridBox[{
+     {"\"\<Weigths\>\"", "\"\<-0.403773,0.190967,0.400766\>\""},
+     {"\"\<Accuracy\>\"", "1"}
+    },
+    AutoDelete->False,
+    GridBoxAlignment->{"Columns" -> {{Left}}},
+    GridBoxBackground->{"Columns" -> {{None}}, "Rows" -> {{
+         GrayLevel[1], 
+         RGBColor[0.8, 0.9, 0.9]}}},
+    GridBoxDividers->{"Columns" -> {
+        GrayLevel[0.5], {
+         GrayLevel[0.85]}, 
+        GrayLevel[0.5]}},
+    GridBoxFrame->{"ColumnsIndexed" -> {{{1, -1}, {1, -1}} -> True}},
+    GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+    GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {2, {0.7}, 2}}],
+   "Grid"], "\[IndentingNewLine]"}]], "Input",
+ CellChangeTimes->{{3.6878760939176197`*^9, 3.687876093941943*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Training Perceptron on Sample Data 2", "Subsection",
+ CellChangeTimes->{{3.6878761217043133`*^9, 3.687876139727171*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Sample Data 2:  Artificial Problem", "Subsubsection",
+ CellChangeTimes->{{3.687864794330587*^9, 3.6878648246978693`*^9}}],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"x1", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"RandomReal", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "1."}], ",", "1."}], "}"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "12"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"x2", " ", "=", " ", 
+   RowBox[{"Table", "[", 
+    RowBox[{
+     RowBox[{"RandomReal", "[", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"-", "1."}], ",", "1."}], "}"}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"i", ",", "12"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"x", " ", "=", " ", 
+   RowBox[{"MapThread", "[", 
+    RowBox[{"List", ",", 
+     RowBox[{"{", 
+      RowBox[{"x1", ",", "x2"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Y", " ", "=", " ", 
+   RowBox[{"MapThread", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{"#1", ">", " ", 
+         RowBox[{"0.5", "+", "#2"}]}], ",", "1", ",", 
+        RowBox[{"-", "1"}]}], "]"}], "&"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"x2", ",", "x1"}], "}"}]}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
+ CellChangeTimes->{{3.6878240123273897`*^9, 3.687824021968519*^9}, {
+   3.687824110221718*^9, 3.6878241731797667`*^9}, {3.687863133872121*^9, 
+   3.687863245883788*^9}, 3.687864448286281*^9, 3.6878695425006723`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Test the Perceptron with Sample 2", "Subsubsection",
+ CellChangeTimes->{{3.6878655491846733`*^9, 3.687865556786726*^9}, {
+  3.687869306496863*^9, 3.687869310137398*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", 
+   RowBox[{
+    RowBox[{"Get", " ", "the", " ", "weight"}], ",", " ", 
+    RowBox[{
+    "and", " ", "the", " ", "number", " ", "of", " ", "correct", " ", 
+     "Values"}]}], " ", "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"w", ",", "accuracy"}], "}"}], " ", "=", " ", 
+     RowBox[{"Perceptron", "[", 
+      RowBox[{"x", ",", "Y"}], "]"}]}], ";"}], "\[IndentingNewLine]", 
+   RowBox[{"toTextW", " ", "=", " ", 
+    RowBox[{"StringRiffle", "[", 
+     RowBox[{"w", ",", "\"\<,\>\""}], "]"}]}]}]}]], "Input",
+ CellChangeTimes->{{3.6878672091158247`*^9, 3.6878672920383377`*^9}, {
+  3.6878673863360367`*^9, 3.687867458040506*^9}}],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"(*", " ", 
+   RowBox[{
+   "get", " ", "the", " ", "weights", " ", "and", " ", "number", " ", "of", 
+    " ", "correct", " ", "mappings"}], "*)"}], "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{"Insert", "[", 
+    RowBox[{
+     RowBox[{"Grid", "[", 
+      RowBox[{
+       RowBox[{"MapThread", "[", 
+        RowBox[{"List", ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"{", 
+            RowBox[{"\"\<Weigths\>\"", ",", "\"\<Accuracy\>\""}], "}"}], ",", 
+           RowBox[{"{", 
+            RowBox[{"toTextW", ",", "accuracy"}], "}"}]}], "}"}]}], "]"}], 
+       ",", 
+       RowBox[{"Alignment", "\[Rule]", " ", "Left"}]}], "]"}], ",", 
+     RowBox[{"{", 
+      RowBox[{
+       RowBox[{"Background", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"None", ",", 
+          RowBox[{"{", 
+           RowBox[{"{", 
+            RowBox[{"White", ",", 
+             RowBox[{"Lighter", "[", 
+              RowBox[{
+               RowBox[{"Blend", "[", 
+                RowBox[{"{", 
+                 RowBox[{"Blue", ",", "Green"}], "}"}], "]"}], ",", "0.8`"}], 
+              "]"}]}], "}"}], "}"}]}], "}"}]}], ",", 
+       RowBox[{"Dividers", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"{", 
+          RowBox[{"Gray", ",", 
+           RowBox[{"{", "LightGray", "}"}], ",", "Gray"}], "}"}], "}"}]}], 
+       ",", 
+       RowBox[{"Frame", "\[Rule]", "True"}], ",", 
+       RowBox[{"Spacings", "\[Rule]", 
+        RowBox[{"{", 
+         RowBox[{"2", ",", 
+          RowBox[{"{", 
+           RowBox[{"2", ",", 
+            RowBox[{"{", "0.7`", "}"}], ",", "2"}], "}"}]}], "}"}]}]}], "}"}],
+      ",", "2"}], "]"}], "\[IndentingNewLine]"}]}]], "Input",
+ CellChangeTimes->{{3.687864122726317*^9, 3.6878641299424973`*^9}, {
+   3.6878643655776157`*^9, 3.687864405400565*^9}, {3.687864479804408*^9, 
+   3.687864535684023*^9}, 3.687865438523554*^9, {3.6878655672604303`*^9, 
+   3.687865658113831*^9}, 3.68786679237326*^9, {3.6878669337732267`*^9, 
+   3.687866947350441*^9}, {3.68786698141895*^9, 3.687866992736782*^9}, {
+   3.687867028220302*^9, 3.687867028573138*^9}, {3.68786705867384*^9, 
+   3.687867059579916*^9}, 3.687867174625437*^9, {3.6878673061112337`*^9, 
+   3.68786732392607*^9}, {3.687867447892888*^9, 3.6878674711508827`*^9}}],
+
+Cell[BoxData[
+ TagBox[GridBox[{
+    {"\<\"Weigths\"\>", "\<\"-0.201152,-0.322817,0.355704\"\>"},
+    {"\<\"Accuracy\"\>", "1"}
+   },
+   AutoDelete->False,
+   GridBoxAlignment->{"Columns" -> {{Left}}},
+   GridBoxBackground->{"Columns" -> {{None}}, "Rows" -> {{
+        GrayLevel[1], 
+        RGBColor[0.8, 0.9, 0.9]}}},
+   GridBoxDividers->{"Columns" -> {
+       GrayLevel[0.5], {
+        GrayLevel[0.85]}, 
+       GrayLevel[0.5]}},
+   GridBoxFrame->{"ColumnsIndexed" -> {{{1, -1}, {1, -1}} -> True}},
+   GridBoxItemSize->{"Columns" -> {{Automatic}}, "Rows" -> {{Automatic}}},
+   GridBoxSpacings->{"Columns" -> {{2}}, "Rows" -> {2, {0.7}, 2}}],
+  "Grid"]], "Output",
+ CellChangeTimes->{
+  3.687866711130809*^9, 3.687866794556149*^9, {3.687866928825429*^9, 
+   3.6878669481145487`*^9}, 3.6878669944399757`*^9, 3.687867326546753*^9, 
+   3.687867439123547*^9, 3.687867478812694*^9, 3.68786957265888*^9}]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1307, 744},
+WindowMargins->{{Automatic, 63}, {Automatic, 1}},
+ShowSelection->True,
+FrontEndVersion->"11.0 for Mac OS X x86 (32-bit, 64-bit Kernel) (September \
+21, 2016)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[579, 22, 218, 3, 64, "Section"],
+Cell[800, 27, 143, 4, 49, "Text"],
+Cell[CellGroupData[{
+Cell[968, 35, 121, 1, 35, "Subsubsection"],
+Cell[1092, 38, 106, 1, 30, "Text"],
+Cell[1201, 41, 4946, 118, 306, "Input"]
+}, Open  ]],
+Cell[6162, 162, 223, 3, 36, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[6410, 169, 106, 1, 29, "Subsubsection"],
+Cell[6519, 172, 176, 2, 30, "Text"],
+Cell[6698, 176, 1581, 43, 75, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8316, 224, 167, 2, 35, "Subsubsection"],
+Cell[8486, 228, 2514, 67, 201, "Input"],
+Cell[11003, 297, 783, 19, 108, InheritFromParent]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[11823, 321, 126, 1, 44, "Subsection"],
+Cell[CellGroupData[{
+Cell[11974, 326, 127, 1, 35, "Subsubsection"],
+Cell[12104, 329, 1453, 45, 117, "Input"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13594, 379, 175, 2, 35, "Subsubsection"],
+Cell[13772, 383, 725, 19, 75, "Input"],
+Cell[CellGroupData[{
+Cell[14522, 406, 2287, 56, 117, "Input"],
+Cell[16812, 464, 899, 21, 81, "Output"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
